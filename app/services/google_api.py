@@ -5,6 +5,7 @@ from app.core.config import settings
 
 FORMAT = "%Y/%m/%d %H:%M:%S"
 
+
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
     # Получаем текущую дату для заголовка документа
     now_date_time = datetime.now().strftime(FORMAT)
@@ -25,7 +26,7 @@ async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
         service.spreadsheets.create(json=spreadsheet_body)
     )
     spreadsheetid = response['spreadsheetId']
-    return spreadsheetid 
+    return spreadsheetid
 
 
 async def set_user_permissions(
@@ -59,7 +60,7 @@ async def spreadsheets_update_value(
     ]
     # Здесь в таблицу добавляются строчки
     for pr in projects:
-        new_row = [str(pr['name']), str(pr['time_of_collecting']), str(pr['description']),]
+        new_row = [str(pr['name']), str(pr['time_of_collecting']), str(pr['description'])]
         table_values.append(new_row)
 
     update_body = {
@@ -75,4 +76,3 @@ async def spreadsheets_update_value(
         )
     )
     return f'https://docs.google.com/spreadsheets/d/{spreadsheetid}'
-
