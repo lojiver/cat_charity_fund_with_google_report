@@ -7,6 +7,7 @@ FORMAT = "%Y/%m/%d %H:%M:%S"
 ROW_COUNT = 100
 COLUMN_COUNT = 11
 
+
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
     # Получаем текущую дату для заголовка документа
     now_date_time = datetime.now().strftime(FORMAT)
