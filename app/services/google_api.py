@@ -4,7 +4,8 @@ from aiogoogle import Aiogoogle
 from app.core.config import settings
 
 FORMAT = "%Y/%m/%d %H:%M:%S"
-
+ROW_COUNT = 100
+COLUMN_COUNT = 11
 
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
     # Получаем текущую дату для заголовка документа
@@ -18,8 +19,8 @@ async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
         'sheets': [{'properties': {'sheetType': 'GRID',
                                    'sheetId': 0,
                                    'title': 'Лист1',
-                                   'gridProperties': {'rowCount': 100,
-                                                      'columnCount': 11}}}]
+                                   'gridProperties': {'rowCount': ROW_COUNT,
+                                                      'columnCount': COLUMN_COUNT}}}]
     }
     # Выполняем запрос
     response = await wrapper_services.as_service_account(
@@ -67,10 +68,13 @@ async def spreadsheets_update_value(
         'majorDimension': 'ROWS',
         'values': table_values
     }
+
+    if len(table_values) > ROW_COUNT:
+        raise ValueError('Количество проектов превышает допустимый размер таблицы')
     await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
             spreadsheetId=spreadsheetid,
-            range='A1:E30',
+            range='1:30',
             valueInputOption='USER_ENTERED',
             json=update_body
         )
